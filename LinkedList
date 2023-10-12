@@ -1,0 +1,94 @@
+package reverse_linked_list;
+
+/* 
+ * TODO This method will reverse the linked list.
+ * Head will point to the last node of the linked list and all the pointers (addresses) will be reversed.
+ * The last node (a new head) will point to the second last node and so on.
+ * The old head node will become the tail node in the reversed LinkedList. 
+ * TODO Use the LinkedList class discussed in the video lecture and write the reverse() method in the same class.
+ * TODO Test your method in the main method.
+ */
+
+// I chose to remove the other methods since they where not utilized in the reverse demonstration.
+
+public class LinkedList<T> {
+
+	private class Node<T> {
+		private T data;
+		private Node<T> next;
+
+		private Node() {
+			data = null;
+			next = null;
+		}
+	}
+
+	private int size;
+	private Node<T> head;
+
+	public LinkedList() {
+		size = 0;
+		head = null;
+	}
+
+	public void addFirst(T data) {
+		insert(0, data);
+	}
+
+	public void addLast(T data) {
+		insert(size, data);
+	}
+
+	public void add(T data) {
+		addLast(data);
+	}
+
+	public void insert(int index, T data) {
+		if (index < 0 || index > size)
+			throw new IndexOutOfBoundsException();
+		Node<T> newNode = new Node<>();
+		newNode.data = data;
+		if (index == 0) {
+			newNode.next = head;
+			head = newNode;
+			size++;
+			return;
+		}
+		Node<T> temp = head;
+		for (int i = 0; i < index - 1; i++)
+			temp = temp.next;
+		newNode.next = temp.next;
+		temp.next = newNode;
+		size++;
+	}
+
+	public String toString() {
+		String str = "[";
+		if (head == null)
+			return str + "]";
+		Node<T> temp = head;
+		while (temp.next != null) {
+			str = str + temp.data + ", ";
+			temp = temp.next;
+		}
+		str = str + temp.data + "]";
+		return str;
+	}
+
+	// This method reverses the linked list.
+	public void reverse() {
+		Node<T> previous = null;
+		Node<T> current = head;
+
+		for (int i = 0; i < size; i++) {
+			Node<T> next = current.next; // Store next node
+
+			current.next = previous; // Reverse link
+
+			previous = current;
+			current = next;
+		}
+
+		head = previous;
+	}
+}
